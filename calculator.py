@@ -8,7 +8,9 @@ elif op == "-":
     print(a-b)
 elif op == "*":
     print(a*b)
-elif (op == "/" or "%") and b != 0:
+elif (op == "/" op == or "%") and b != 0:
     print(a/b)
+elif op == "**" or op == "^":
+    print(a**b)
 else:
     print("Что-то пошло не так.")
