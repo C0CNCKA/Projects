@@ -1,4 +1,3 @@
-import time
 h = int(input("Введите высоту: "))
 s = 'I'
 
