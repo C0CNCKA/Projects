@@ -5,8 +5,7 @@ def getword(l):
     word = requests.get(f"https://random-word-api.herokuapp.com/word?length={l}")
     if word.status_code == 200:
         #print(str(word.json())[2:][:l]) #<- загаданное слово
-        return str(word.json())[2:][:l]
-        
+        return str(word.json())[2:][:l]  
     else:
         return word.status_code
 def getword_ru(l):
@@ -14,7 +13,12 @@ def getword_ru(l):
     return word
 
 def game():
-    l = int(input('Word length: '))
+    l = input('Word length: ')
+    try:
+        l = int(l)  
+    except ValueError: pass
+    if l == 'q':
+        return 2
     word = getword(l)
     if word.isdigit():
         return word
@@ -39,6 +43,7 @@ def game():
     return 1
 
 streak = 0
+print("Enter \"q\" to exit.")
 while(True):
     e = game()
     #print(e)
@@ -52,5 +57,9 @@ while(True):
         if streak > 1:
             print(f'\033[38;5;54mYou lost your winstreak :C\033[0m')
         streak = 0
+    elif e == 2:
+        break
     else:
         print(f'Can\'t get word. ({e})')
+
+#Я лооооох
