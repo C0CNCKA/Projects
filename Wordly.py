@@ -4,7 +4,7 @@ import sys
 def getword(l):
     word = requests.get(f"https://random-word-api.herokuapp.com/word?length={l}")
     if word.status_code == 200:
-        print(str(word.json())[2:][:l]) #<- загаданное слово
+        #print(str(word.json())[2:][:l]) #<- загаданное слово
         return str(word.json())[2:][:l]
         
     else:
