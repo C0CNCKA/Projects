@@ -14,10 +14,34 @@ def to_dict(w):
         a.append({w[i]:None})
     return a
 
-def game():
-    c = 6 #Кол-во попыток
+def settings():
+    global c
+    global length
+    print('\033[FSettings:            ')
+
+    while True:
+        print(f'Enter new word length:   \033[38;5;8m({length})\033[0m', end='\b\b\b\b\b')
+        try:
+            length = int(input())   
+        except ValueError:
+            print('Wrong input.')
+            continue
+        break
+
+    while True:
+        print(f'Enter new attempts count:   \033[38;5;8m({c})\033[0m', end='\b\b\b\b\b')
+        try:
+            c = int(input())
+        except ValueError:
+            print('Wrong input.')
+            continue
+        break
+    print('Game starts.')       
+
+def game(length, c):
     att = 0
     #word = [{'c':None}, {'h':None}, {'e':None}, {'e':None}, {'s':None}, {'e':None}] #getword(len)
+    global word
     word = getword(length) #'cheese'
     #print(word) #Вывод загаданного слова
     
@@ -26,9 +50,10 @@ def game():
         guess = input()[:length]
         guessD = to_dict(guess)
 
-        if guess == 'q': #Обработка выхода из игры
+        if guess == '/q': #Обработка выхода из игры
             return 0
-        
+        elif guess == '/s': #Обработка настроек
+            return 3
         for i in range(len(word)):
             count[word[i]] = word.count(word[i])
 
@@ -65,22 +90,34 @@ def game():
         print()
     return 2
 
-print('Press "q" to exit.')
+print('Enter "/q" to exit, "/s" for settings.')
 streak = 0
-length = int(input('Введите длинну слова: '))
-
+c = 5 #Кол-во попыток
+length = 5 #Длина слова
+inp = input('Enter word length: ')
+if inp == '/s':
+    settings()
+elif inp == '/q':
+    exit()
+else:
+    try:
+        length = int(inp)
+    except ValueError:print('Wrong length.')
+    print('\033[FWord length:',length,'        ')
 
 while True:
-    match game():
+    match game(length, c):
         case 0:
-            pass
+            break
         case 1:
             print('\033[38;5;120mYou Win!\033[0m')
             if streak > 0:
                 print(f'\033[38;5;54mYour winstreak: {streak + 1}\033[0m')
             streak +=1
         case 2:
-            print('\033[38;5;124mYou lose.\033[0m')
+            print('\033[38;5;124mYou lose.\033[0m\nWord was: ' + word)
             if streak > 1:
                 print(f'\033[38;5;54mYou lost your winstreak :C\033[0m')
             streak = 0
+        case 3:
+            settings()
